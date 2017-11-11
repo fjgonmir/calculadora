@@ -22,6 +22,7 @@ public class Calculadora extends JFrame{
 
 	private JPanel contenedor;
 	private JPanel panelNumeros;
+	private JPanel panelEspecial;
 	private JTextField pantalla;
 	private Operaciones calculo = new OperacionesImpl();
 
@@ -48,20 +49,42 @@ public class Calculadora extends JFrame{
 		panelNumeros.setLayout(new GridLayout(4, 3));
 		panelNumeros.setBorder(new EmptyBorder(4, 4, 4, 4));
 		
-		//creo los botones
+		//crea el panel de caracteres especiales
+		this.panelEspecial = new JPanel();
+		panelEspecial.setLayout(new GridLayout(5, 1));
+		panelEspecial.setBorder(new EmptyBorder(4, 4, 4, 4));
+		
+		//creo los botones numericos
 		for (int i = 1; i <= 9; i++) {
-			crearBotones(i);
+			crearBotones(""+i);
 			
 		}
+		crearBotones(""+0);
+		crearBotones("C");
 		
+		//crea botones especiales
+		crearBotonesEspeciales("+");
+		crearBotonesEspeciales("-");
+		crearBotonesEspeciales("x");
+		crearBotonesEspeciales("/");
+		crearBotonesEspeciales("=");
+		//añado el panel de numeros y el de los caracteres especiales
 		contenedor.add("Center", panelNumeros);
+		contenedor.add("East", panelEspecial);
 		
 		validate();//se encarga de validar a los componentes
 	
 	}
 	
-	public void crearBotones(int i) {
-		JButton b1= new JButton(""+i);
+	private void crearBotonesEspeciales(String caracter) {
+		JButton btn = new JButton(caracter);
+		this.panelEspecial.add(btn);
+		
+		
+	}
+
+	public void crearBotones(String i) {
+		JButton b1= new JButton(i);
 		b1.setVerticalAlignment(AbstractButton.CENTER);
 		b1.setHorizontalAlignment(AbstractButton.CENTER);
 		b1.addMouseListener(new MouseAdapter() {
