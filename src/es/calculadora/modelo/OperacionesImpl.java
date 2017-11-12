@@ -18,8 +18,8 @@ public class OperacionesImpl implements Operaciones{
 		return valor;
 	}
 
-	public void setValor(int valor) {
-		this.valor = valor;
+	public void setValor() {
+		this.valor = 0;
 	}
 
 
@@ -31,19 +31,19 @@ public class OperacionesImpl implements Operaciones{
 
 	@Override
 	public void resta(int numero) {
-		// TODO Auto-generated method stub
+		this.valor -= numero;
 		
 	}
 
 	@Override
 	public void Multiplicacion(int numero) {
-		// TODO Auto-generated method stub
+		this.valor *= numero;
 		
 	}
 
 	@Override
 	public void division(int numero) {
-		// TODO Auto-generated method stub
+		this.valor /= numero;
 		
 	}
 

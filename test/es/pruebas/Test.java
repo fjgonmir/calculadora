@@ -10,6 +10,8 @@ public class Test {
 		OperacionesImpl op = new OperacionesImpl();
 		op.suma(1);
 		op.suma(2);
+		op.suma(1);
+		op.division(2);
 		System.out.println(op.getValor());
 
 	}

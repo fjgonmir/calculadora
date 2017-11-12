@@ -25,6 +25,7 @@ public class Calculadora extends JFrame{
 	private JPanel panelEspecial;
 	private JTextField pantalla;
 	private Operaciones calculo = new OperacionesImpl();
+	private boolean esOperacion = true;
 
 	public Calculadora() throws HeadlessException {
 		//creo el marco
@@ -51,7 +52,7 @@ public class Calculadora extends JFrame{
 		
 		//crea el panel de caracteres especiales
 		this.panelEspecial = new JPanel();
-		panelEspecial.setLayout(new GridLayout(5, 1));
+		panelEspecial.setLayout(new GridLayout(6, 1));
 		panelEspecial.setBorder(new EmptyBorder(4, 4, 4, 4));
 		
 		//creo los botones numericos
@@ -60,7 +61,6 @@ public class Calculadora extends JFrame{
 			
 		}
 		crearBotones(""+0);
-		crearBotones("C");
 		
 		//crea botones especiales
 		crearBotonesEspeciales("+");
@@ -68,6 +68,7 @@ public class Calculadora extends JFrame{
 		crearBotonesEspeciales("x");
 		crearBotonesEspeciales("/");
 		crearBotonesEspeciales("=");
+		crearBotonesEspeciales("C");
 		//añado el panel de numeros y el de los caracteres especiales
 		contenedor.add("Center", panelNumeros);
 		contenedor.add("East", panelEspecial);
@@ -76,11 +77,62 @@ public class Calculadora extends JFrame{
 	
 	}
 	
+	//crea los botones especiales y los anade a el panel de los caracteres especiales
 	private void crearBotonesEspeciales(String caracter) {
 		JButton btn = new JButton(caracter);
+		btn.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			try {
+				realizarOperacion((JButton)e.getSource());
+			} catch (NumberFormatException e2) {
+				;
+			}
+			
+		}
+
+		});
 		this.panelEspecial.add(btn);
 		
-		
+	}
+	
+	//realiza las operaciones de la calculadora
+	private void realizarOperacion(JButton btn) {
+		int numero;
+		switch (btn.getText()) {
+		case "+":
+			numero = Integer.parseInt(pantalla.getText());
+			calculo.suma(numero);
+			numero = ((OperacionesImpl)calculo).getValor();
+			pantalla.setText(""+numero);
+			break;
+		case "-":
+			numero = Integer.parseInt(pantalla.getText());
+			calculo.resta(numero);
+			numero = ((OperacionesImpl)calculo).getValor();
+			pantalla.setText(""+numero);
+			break;
+		case "x":
+			numero = Integer.parseInt(pantalla.getText());
+			calculo.Multiplicacion(numero);
+			numero = ((OperacionesImpl)calculo).getValor();
+			pantalla.setText(""+numero);
+			break;
+		case "/":
+			numero = Integer.parseInt(pantalla.getText());
+			calculo.division(numero);
+			numero = ((OperacionesImpl)calculo).getValor();
+			pantalla.setText(""+numero);
+			break;
+		case "C":
+			((OperacionesImpl)calculo).setValor();
+			pantalla.setText(""+((OperacionesImpl)calculo).getValor());
+			break;
+
+		default:
+			break;
+		}
+		esOperacion = true;
 	}
 
 	public void crearBotones(String i) {
@@ -96,13 +148,15 @@ public class Calculadora extends JFrame{
 		this.panelNumeros.add(b1);
 	}
 	
+	//muestra los numeros en pantalla
 	public void mostrarPantalla(JButton btn) {
-		if (pantalla.getText().equals("0")) {
+		
+		if (pantalla.getText().equals("0") || esOperacion) {
 			pantalla.setText(btn.getText());
 		}else {
 			pantalla.setText(pantalla.getText()+btn.getText());
 		}
-		
+		esOperacion = false;
 		
 	}
 	
